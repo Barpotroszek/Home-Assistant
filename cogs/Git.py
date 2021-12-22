@@ -5,7 +5,7 @@ class Git(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="git", usage="<option>", help="Sterowanie gitem")
+    @command(name="git", usage="<option>", help="Sterowanie gitem")
     async def git(self, ctx, *args):
         if len(args)==0:
             cmd = ['git', "status"]
