@@ -5,14 +5,17 @@ class Git(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @command(name="git")
-    async def git_command_handler(self, ctx, *args):
-        '''Obsługa gita w kontenerze/Bocie'''
-        if args == ():
-            args = ("status",)
-        cmd = ['git']+[a for a in args]
-        proc = run(cmd, shell=True, text=True, capture_output=True)
-        await ctx.send(f"```sh\n{proc.stdout}```")
+    @commands.command(name="git", usage="<option>", help="Sterowanie gitem")
+    async def git(self, ctx, *args):
+        if len(args)==0:
+            cmd = ['git', "status"]
+        else:
+            cmd = ['git']+[a for a in args]
+        proc = run(" ".join(cmd), shell=True, text=True, capture_output=True)
+        if proc.returncode == 0:
+            await ctx.send(f"Output:\n```\n{proc.stdout}```")
+        else:
+            await ctx.send(f"Error:\n```\n{proc.stderr}```")
 
 def setup(bot):
     bot.add_cog(Git(bot))        

@@ -1,5 +1,5 @@
 import json
-from os import makedirs, walk
+from os import walk
 from os.path import join
 from discord import Color, Embed
 from discord.channel import TextChannel

@@ -56,10 +56,10 @@ async def reload(ctx):
             except Exception:
                 try:
                     bot.add_cog(cog)
-                except Exception:
+                except Exception as e:
                     embed.add_field(
                         name=cog,
-                        value="Something gone wrong",
+                        value=e.args,
                         inline=False
                     )  
     
