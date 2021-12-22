@@ -47,7 +47,7 @@ async def startup(bot):
         return
 
     async def get_channel_by_name(name: str) -> TextChannel:
-        guild = bot.get_guild(open("guild_id", "r").read())
+        guild = bot.get_guild(open("config/guild_id", "r").read())
         for ch in bot.get_all_channels():
             if ch.name == name:
                 return ch.id
