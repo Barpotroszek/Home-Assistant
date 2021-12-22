@@ -1,5 +1,5 @@
 import json
-from os import walk
+from os import makedirs, walk
 from os.path import join
 from discord import Color, Embed
 from discord.channel import TextChannel
@@ -8,8 +8,10 @@ from requests import get
 
 DATA_DIR_PATH = "path"
 COGS_DIR_PATH = "cogs"
-CONFIG_FILE_PATH = "config/config.json"
-TOKEN = open("config/token").read()
+SECRETS_PATH = "secrets"
+CONFIG_FILE_PATH = f"{SECRETS_PATH}/config.json"
+TOKEN = open(f"{SECRETS_PATH}/token", "r").read()
+GUILD_ID = open(f"{SECRETS_PATH}/guild_id", "r").read()
 __cogs__ = []
 
 
@@ -42,12 +44,18 @@ def __cogs__():
 
 async def startup(bot):
     global settings
+    from os.path import isfile
+    if not isfile(CONFIG_FILE_PATH):
+        with open(CONFIG_FILE_PATH, "a") as f:
+            f.write("{}")
+            f.close()
+    
     settings = _json(CONFIG_FILE_PATH).read()
     if all(b for _, b in settings.items()) and len(settings) == 7:
         return
 
     async def get_channel_by_name(name: str) -> TextChannel:
-        guild = bot.get_guild(open("config/guild_id", "r").read())
+        guild = bot.get_guild(GUILD_ID)
         for ch in bot.get_all_channels():
             if ch.name == name:
                 return ch.id
